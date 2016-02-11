@@ -11,8 +11,9 @@ import (
 
 func aBhyveInstallation() error {
 	out, err := exec.Command("bhyve").CombinedOutput()
+	_ = err
 
-	if (err != nil) && (string(out[0:12]) != "Usage: bhyve") {
+	if string(out[0:12]) != "Usage: bhyve" {
 		fmt.Errorf("Bhyve is not installed or not on the system PATH\n")
 	}
 
