@@ -1,14 +1,22 @@
 package main
 
 import (
-	//	"fmt"
-	"os"
-
+	//	"bytes"
+	"fmt"
 	"github.com/DATA-DOG/godog"
+	"os"
+	"os/exec"
+	//	"strings"
 )
 
 func aBhyveInstallation() error {
-	return godog.ErrPending
+	out, err := exec.Command("bhyve").CombinedOutput()
+
+	if (err != nil) && (string(out[0:12]) != "Usage: bhyve") {
+		fmt.Errorf("Bhyve is not installed or not on the system PATH\n")
+	}
+
+	return nil
 }
 
 func noVmNamed(arg1 string) error {
@@ -32,6 +40,9 @@ func bkShouldOutput(arg1 string) error {
 }
 
 func main() {
+
+	//	_ = aBhyveInstallation()
+
 	godog.Run(func(s *godog.Suite) {
 		origWd, err := os.Getwd()
 		if err != nil {
