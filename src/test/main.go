@@ -14,7 +14,7 @@ func aBhyveInstallation() error {
 	_ = err
 
 	if string(out[0:12]) != "Usage: bhyve" {
-		fmt.Errorf("Bhyve is not installed or not on the system PATH\n")
+		return fmt.Errorf("Bhyve is not installed or not on the system PATH\n")
 	}
 
 	return nil
@@ -25,7 +25,14 @@ func noVmNamed(arg1 string) error {
 }
 
 func iCdTo(arg1 string) error {
-	return godog.ErrPending
+
+	err := os.Chdir("./test/config")
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func thereIsAVmNamed(arg1 string) error {
@@ -33,7 +40,14 @@ func thereIsAVmNamed(arg1 string) error {
 }
 
 func aTestConfigFile() error {
-	return godog.ErrPending
+
+	cfgFile, err := os.Open("./test/config/testConfig.bk")
+	_ = cfgFile
+	if os.IsNotExist(err) {
+		return fmt.Errorf("testConfig.bk does not exist")
+	}
+
+	return nil
 }
 
 func bkShouldOutput(arg1 string) error {
