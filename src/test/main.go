@@ -4,6 +4,7 @@ import (
 	//	"bytes"
 	"fmt"
 	"github.com/DATA-DOG/godog"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	//	"strings"
@@ -41,17 +42,27 @@ func thereIsAVmNamed(arg1 string) error {
 
 func aTestConfigFile() error {
 
-	cfgFile, err := os.Open("./test/config/testConfig.bk")
-	_ = cfgFile
+	configFile, err := os.Open("./test/config/testConfig.bk")
+	_ = configFile
 	if os.IsNotExist(err) {
 		return fmt.Errorf("testConfig.bk does not exist")
 	}
 
 	return nil
 }
+func bkShouldOutputonTheFirstLine(arg1 string) error {
 
-func bkShouldOutput(arg1 string) error {
-	return godog.ErrPending
+	output, err := ioutil.ReadFile("bk.out")
+
+	if err != nil {
+		return err
+	}
+
+	if string(output) != "Config File Parsed" {
+		return fmt.Errorf("Config File NOT Parsed")
+	}
+
+	return nil
 }
 
 func main() {
@@ -76,6 +87,6 @@ func main() {
 		s.Step(`^I run: "([^"]*)"$`, iRun)
 		s.Step(`^there is a vm named: "([^"]*)"$`, thereIsAVmNamed)
 		s.Step(`^a test config file$`, aTestConfigFile)
-		s.Step(`^bk should output "([^"]*)"$`, bkShouldOutput)
+		s.Step(`^bk should output "([^"]*)" on the first line$`, bkShouldOutputonTheFirstLine)
 	})
 }
