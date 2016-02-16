@@ -1,11 +1,13 @@
 package main
 
 import (
+	//	"encoding/json"
 	"fmt"
 	"github.com/twinj/uuid"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"net"
 	"os"
+	"testing"
 )
 
 // This var block contains the command line commands and flags for BeastKeeper.
@@ -73,14 +75,10 @@ func parseConfigFile(configFileName string) {
 	configFile, err := os.Open(configFileName)
 	_ = configFile
 	if err != nil {
-		fmt.Printf("%v\n", "Config File not found")
+		fmt.Printf("%v\n", "Config File Not Found")
 	} else {
-		fmt.Printf("%v\n", "Config File found")
+		fmt.Printf("%v\n", "Config File Found")
 	}
-
-}
-
-func TestParseConfigFile() {
 
 }
 
