@@ -7,7 +7,6 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 	"net"
 	"os"
-	"testing"
 )
 
 // This var block contains the command line commands and flags for BeastKeeper.
@@ -19,7 +18,7 @@ var (
 
 // This var block contains globally declared variables for BeastKeeper.
 var (
-	beastKeeperMasterConfiguration BeastKeeperConfiguration
+	beastKeeperMasterConfiguration *BeastKeeperConfiguration
 )
 
 //Type and Enum construct for describing Instance types
@@ -70,7 +69,7 @@ type BeastKeeperConfiguration struct {
 // The User can speficy the config file name on the command line with the -c or --configFileName flags.
 // If no file is specified, the defailt value of "config.bk" is used.
 // BeastKeeper looks in the current directory for that default file.
-func parseConfigFile(configFileName string) {
+func parseConfigFile(configFileName string) *BeastKeeperConfiguration {
 
 	configFile, err := os.Open(configFileName)
 	_ = configFile
@@ -80,13 +79,13 @@ func parseConfigFile(configFileName string) {
 		fmt.Printf("%v\n", "Config File Found")
 	}
 
+	config := new(BeastKeeperConfiguration)
+	return config
+
 }
 
 func command_config_print() {
 	fmt.Printf("%v\n", "Config File Parsed As:\n\tDataPoint:\tnil\n")
-}
-
-func TestCommand_config() {
 }
 
 func main() {
@@ -100,7 +99,7 @@ func main() {
 
 	}
 
-	parseConfigFile(configFileName)
+	beastKeeperMasterConfiguration = parseConfigFile(configFileName)
 
 	switch parsedFlagsAndCommands {
 
