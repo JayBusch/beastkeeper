@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"os"
 	"strings"
 )
 
@@ -24,7 +25,7 @@ var (
 	beastKeeperMasterConfiguration BeastKeeperConfiguration
 )
 
-//Type and Enum construct for describing Instance types
+// Type and Enum construct for describing Instance types
 type InstanceType int
 
 const (
@@ -32,8 +33,8 @@ const (
 	BM InstanceType = iota
 )
 
+// Overriding the UnmarshalJSON method of our InstaceType so we can use our enum
 func (self InstanceType) UnmarshalJSON(b []byte) error {
-
 	switch strings.Trim(string(b), "\"") {
 	case "VM":
 		self = VM
@@ -46,6 +47,9 @@ func (self InstanceType) UnmarshalJSON(b []byte) error {
 	}
 }
 
+// The UUID struct is created to hold a single UUID type such that it's
+// UnmarshalJSON method can be overriden in order to parse the UUID during JSON
+// marshalling
 type UUID struct {
 	UUID uuid.UUID
 }
@@ -120,8 +124,18 @@ func parseConfigFile(configFileName string) BeastKeeperConfiguration {
 	return *config
 }
 
+// command_config_print allows the user to print the currently configured config
+// file to stdout.  The format is a valid JSON config file in and of itself.
+// This can be used along with other command line flags to construct a permanent
+// config file.
 func command_config_print() {
-	fmt.Printf("%v\n", "Config File Parsed As:\n\tDataPoint:\tnil\n")
+
+	configBytes, err := json.Marshal(beastKeeperMasterConfiguration)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
+	os.Stdout.Write(configBytes)
+
 }
 
 func main() {
