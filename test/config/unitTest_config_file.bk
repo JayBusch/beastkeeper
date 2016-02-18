@@ -4,7 +4,8 @@
 			"ID" : "2237b51a-39aa-4720-b68a-d1ee214e9272",
 			"Label" : "test_instance_1",
 			"Type" : "VM",
-			"Address" : "192.242.2.200"
+			"Address" : "192.242.2.200",
+			"AdminLogin" : "root"
 			}]	
 	}
 	

@@ -70,6 +70,7 @@ type Instance struct {
 	Label      string
 	Type       InstanceType
 	Address    net.IP
+	AdminLogin string
 	Containers []ApplicationContainerInstance
 }
 

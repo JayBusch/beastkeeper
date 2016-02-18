@@ -16,7 +16,8 @@ func TestParseConfigFile(t *testing.T) {
 			"ID" : "2237b51a-39aa-4720-b68a-d1ee214e9272",
 			"Label" : "test_instance_1",
 			"Type" : "VM",
-			"Address" : "192.242.2.200"
+			"Address" : "192.242.2.200",
+			"AdminLogin" : "root"
 			}]	
 	}
 	`
@@ -30,11 +31,16 @@ func TestParseConfigFile(t *testing.T) {
 	// Check the values on our returned config file to see if they match
 	if len(testConfig.Instances) < 1 {
 		t.Fatalf("No data was unmarshalled")
+	} else if testConfig.Instances[0].ID.UUID.String() != "2237b51a-39aa-4720-b68a-d1ee214e9272" {
+		t.Fatalf("ID does not match")
+
 	} else if testConfig.Instances[0].Label != "test_instance_1" {
 		t.Fatalf("Label does not match")
 	} else if testConfig.Instances[0].Type != VM {
 		t.Fatalf("Type does not match")
 	} else if testConfig.Instances[0].Address.String() != "192.242.2.200" {
 		t.Fatalf("Address does not match")
+	} else if testConfig.Instances[0].AdminLogin != "root" {
+		t.Fatalf("AdminLogin does not match")
 	}
 }
