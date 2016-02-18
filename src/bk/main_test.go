@@ -32,6 +32,9 @@ func TestParseConfigFile(t *testing.T) {
 		t.Fatalf("No data was unmarshalled")
 	} else if testConfig.Instances[0].Label != "test_instance_1" {
 		t.Fatalf("Label does not match")
+	} else if testConfig.Instances[0].Type != VM {
+		t.Fatalf("Type does not match")
+	} else if testConfig.Instances[0].Address.String() != "192.242.2.200" {
+		t.Fatalf("Address does not match")
 	}
-
 }
