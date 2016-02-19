@@ -124,11 +124,11 @@ func parseConfigFile(configFileName string) BeastKeeperConfiguration {
 	return *config
 }
 
-// command_config_print allows the user to print the currently configured config
+// commandConfigPrint allows the user to print the currently configured config
 // file to stdout.  The format is a valid JSON config file in and of itself.
 // This can be used along with other command line flags to construct a permanent
 // config file.
-func command_config_print() {
+func commandConfigPrint() {
 
 	configBytes, err := json.Marshal(beastKeeperMasterConfiguration)
 	if err != nil {
@@ -154,7 +154,7 @@ func main() {
 	switch parsedFlagsAndCommands {
 
 	case "config print":
-		command_config_print()
+		commandConfigPrint()
 
 	}
 }

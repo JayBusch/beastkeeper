@@ -44,3 +44,6 @@ func TestParseConfigFile(t *testing.T) {
 		t.Fatalf("AdminLogin does not match")
 	}
 }
+
+func TestConfigPrintCommand() {
+}
