@@ -33,6 +33,19 @@ const (
 	BM InstanceType = iota
 )
 
+// Overriding the MarshalJSON method of our InstaceType so we can use our enum
+func (self InstanceType) MarshalJSON() ([]byte, error) {
+	switch self {
+	case VM:
+		return json.Marshal("VM")
+	case BM:
+		return json.Marshal("BM")
+	default:
+		return nil, errors.New("Un-Recognized InstanceType")
+	}
+
+}
+
 // Overriding the UnmarshalJSON method of our InstaceType so we can use our enum
 func (self InstanceType) UnmarshalJSON(b []byte) error {
 	switch strings.Trim(string(b), "\"") {
@@ -54,6 +67,12 @@ type UUID struct {
 	UUID uuid.UUID
 }
 
+// Overriding the MarshalJSON method of the UUID type so we can return a string
+func (self *UUID) MarshalJSON() ([]byte, error) {
+	return json.Marshal(self.UUID.String())
+}
+
+// Overriding the UnmarshalJSON method of the UUID type so we can parse the UUID
 func (self *UUID) UnmarshalJSON(b []byte) error {
 
 	s := strings.Trim(string(b), "\"")
@@ -120,7 +139,9 @@ func parseConfigFile(configFileName string) BeastKeeperConfiguration {
 	if jsonErr != nil {
 		log.Fatal(jsonErr)
 	}
+	beastKeeperMasterConfiguration = *config
 
+	//return here in order to increase code testability
 	return *config
 }
 
@@ -138,18 +159,24 @@ func commandConfigPrint() {
 
 }
 
+// General order of operations here is:
+//
+// 1. Parse our command line arguments and set config variables accordingly
+// 2. Parse our configuration file
+// 3. Iterate through the instances as defined in config, and launch an Instance
+//    State Machine for each one.
+// 4. When all Instance State Machines have reached either True or Error states
+//    report to STDOUT and exit.
 func main() {
 	kingpin.Version("0.0.1")
 	parsedFlagsAndCommands := kingpin.Parse()
 
 	configFileName := "config.bk"
 	if *config_filename_flag != "" {
-
 		configFileName = *config_filename_flag
-
 	}
 
-	beastKeeperMasterConfiguration = parseConfigFile(configFileName)
+	parseConfigFile(configFileName)
 
 	switch parsedFlagsAndCommands {
 
