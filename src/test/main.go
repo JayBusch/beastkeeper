@@ -1,13 +1,13 @@
 package main
 
 import (
-	//	"bytes"
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/DATA-DOG/godog"
 	"io/ioutil"
 	"os"
 	"os/exec"
-	//	"strings"
 )
 
 func aBhyveInstallation() error {
@@ -50,24 +50,45 @@ func aTestConfigFile() error {
 
 	return nil
 }
-func bkShouldOutputonTheFirstLine(arg1 string) error {
 
-	output, err := ioutil.ReadFile("bk.out")
+func bkOutputShouldMatchTestConfig() error {
+
+	outputData, err := ioutil.ReadFile("bk.out")
 
 	if err != nil {
 		return err
 	}
 
-	if string(output) != "Config File Parsed" {
-		return fmt.Errorf("Config File NOT Parsed")
+	configFileData, configFileErr := ioutil.ReadFile("./testConfig.bk")
+
+	if os.IsNotExist(configFileErr) {
+		return fmt.Errorf("testConfig.bk does not exist")
+	} else if configFileErr != nil {
+		return configFileErr
+	}
+
+	outputDataBuffer := new(bytes.Buffer)
+
+	odJsonErr := json.Compact(outputDataBuffer, outputData)
+	if odJsonErr != nil {
+		return fmt.Errorf("Error compacting outputData")
+	}
+
+	configDataBuffer := new(bytes.Buffer)
+
+	cfgJsonErr := json.Compact(configDataBuffer, configFileData)
+	if cfgJsonErr != nil {
+		return fmt.Errorf("Error compacting configFileData")
+	}
+
+	if !bytes.Equal(outputDataBuffer.Bytes(), configDataBuffer.Bytes()) {
+		return fmt.Errorf("Output JSON does not match original")
 	}
 
 	return nil
 }
 
 func main() {
-
-	//	_ = aBhyveInstallation()
 
 	godog.Run(func(s *godog.Suite) {
 		origWd, err := os.Getwd()
@@ -87,6 +108,6 @@ func main() {
 		s.Step(`^I run: "([^"]*)"$`, iRun)
 		s.Step(`^there is a vm named: "([^"]*)"$`, thereIsAVmNamed)
 		s.Step(`^a test config file$`, aTestConfigFile)
-		s.Step(`^bk should output "([^"]*)" on the first line$`, bkShouldOutputonTheFirstLine)
+		s.Step(`^bk output should match testConfig$`, bkOutputShouldMatchTestConfig)
 	})
 }
