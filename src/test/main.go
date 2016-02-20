@@ -21,10 +21,6 @@ func aBhyveInstallation() error {
 	return nil
 }
 
-func noVmNamed(arg1 string) error {
-	return godog.ErrPending
-}
-
 func iCdTo(arg1 string) error {
 
 	err := os.Chdir("./test/config")
@@ -34,6 +30,10 @@ func iCdTo(arg1 string) error {
 	}
 
 	return nil
+}
+
+func noVmNamed(arg1 string) error {
+	return godog.ErrPending
 }
 
 func thereIsAVmNamed(arg1 string) error {
