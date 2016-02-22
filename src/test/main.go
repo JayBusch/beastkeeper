@@ -23,7 +23,7 @@ func aBhyveInstallation() error {
 
 func iCdTo(arg1 string) error {
 
-	err := os.Chdir("./test/config")
+	err := os.Chdir(arg1)
 
 	if err != nil {
 		return err
@@ -33,7 +33,12 @@ func iCdTo(arg1 string) error {
 }
 
 func noVmNamed(arg1 string) error {
-	return godog.ErrPending
+
+	if _, err := os.Stat("./test/virtualMachines/" + arg1 + ".img"); os.IsNotExist(err) {
+		return nil
+	}
+
+	return fmt.Errorf("%v DOES exist (and it should not)", arg1)
 }
 
 func thereIsAVmNamed(arg1 string) error {
@@ -42,11 +47,17 @@ func thereIsAVmNamed(arg1 string) error {
 
 func aTestConfigFile() error {
 
-	configFile, err := os.Open("./test/config/testConfig.bk")
+	_, fileErr := os.Stat("./test/config/testConfig.bk")
+
+	if os.IsNotExist(fileErr) {
+		return fileErr
+	}
+
+	/*configFile, err := os.Open("./test/config/testConfig.bk")
 	_ = configFile
 	if os.IsNotExist(err) {
 		return fmt.Errorf("testConfig.bk does not exist")
-	}
+	}*/
 
 	return nil
 }

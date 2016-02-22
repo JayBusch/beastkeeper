@@ -13,7 +13,7 @@ import (
 // file system and allow the parseConfigFile function to read it back.
 // The idea being that unit tests should be self contained and not rely
 // on external resources.
-var testConfigFileName = "../../test/config/unitTest_config_file.bk"
+var testConfigFileName = "../../test/config/testConfig.bk"
 
 var testConfigAsBytes = []byte(`
 	{
@@ -21,6 +21,7 @@ var testConfigAsBytes = []byte(`
 			"ID" : "2237b51a-39aa-4720-b68a-d1ee214e9272",
 			"Label" : "test_instance_1",
 			"Type" : "VM",
+			"Path" : "test/virtualMachines/",
 			"Address" : "192.242.2.200",
 			"AdminLogin" : "root",
 			"Containers" : []

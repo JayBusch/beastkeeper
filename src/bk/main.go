@@ -92,6 +92,7 @@ type Instance struct {
 	ID         *UUID `json:",UUID"`
 	Label      string
 	Type       InstanceType
+	Path       string
 	Address    net.IP
 	AdminLogin string
 	Containers []ApplicationContainerInstance
