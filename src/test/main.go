@@ -47,13 +47,17 @@ func thereIsAVmNamed(arg1 string) error {
 
 func aTestConfigFile() error {
 
-	_, fileErr := os.Stat("./test/config/testConfig.bk")
+	//var workingDir, _ = os.Getwd()
+
+	//return fmt.Errorf("%v", workingDir)
+
+	_, fileErr := os.Stat("test/config/testConfig.bk")
 
 	if os.IsNotExist(fileErr) {
 		return fileErr
 	}
 
-	/*configFile, err := os.Open("./test/config/testConfig.bk")
+	/*configFile, err := os.Open("testConfig.bk")
 	_ = configFile
 	if os.IsNotExist(err) {
 		return fmt.Errorf("testConfig.bk does not exist")
@@ -70,7 +74,7 @@ func bkOutputShouldMatchTestConfig() error {
 		return err
 	}
 
-	configFileData, configFileErr := ioutil.ReadFile("./testConfig.bk")
+	configFileData, configFileErr := ioutil.ReadFile("./config/testConfig.bk")
 
 	if os.IsNotExist(configFileErr) {
 		return fmt.Errorf("testConfig.bk does not exist")
@@ -113,6 +117,12 @@ func main() {
 			}
 		})
 
+		s.AfterScenario(func(_ interface{}, _ error) {
+			if err := os.Chdir(origWd); err != nil {
+				panic(err)
+			}
+		})
+
 		s.Step(`^a Bhyve installation$`, aBhyveInstallation)
 		s.Step(`^no vm named: "([^"]*)"$`, noVmNamed)
 		s.Step(`^I cd to: "([^"]*)"$`, iCdTo)
@@ -121,4 +131,5 @@ func main() {
 		s.Step(`^a test config file$`, aTestConfigFile)
 		s.Step(`^bk output should match testConfig$`, bkOutputShouldMatchTestConfig)
 	})
+
 }
