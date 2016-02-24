@@ -18,6 +18,8 @@ var (
 	command_config_flag       = kingpin.Command("config", "work with the config file")
 	command_config_print_flag = command_config_flag.Command("print", "print the config file")
 	config_filename_flag      = kingpin.Flag("configFileName", "set the config file name").Short('c').String()
+
+	command_enforce_flag = kingpin.Command("enforce", "attempt to create a system state that matches the configuration")
 )
 
 // This var block contains globally declared variables for BeastKeeper.
@@ -160,6 +162,12 @@ func commandConfigPrint() {
 
 }
 
+// commandEnforce causes BeastKeeper to attempt creating a state that matches
+// it's configuration.
+func commandEnforce() {
+
+}
+
 // General order of operations here is:
 //
 // 1. Parse our command line arguments and set config variables accordingly
@@ -183,6 +191,8 @@ func main() {
 
 	case "config print":
 		commandConfigPrint()
-
+	case "enforce":
+		commandEnforce()
 	}
+
 }

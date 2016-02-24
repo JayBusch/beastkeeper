@@ -42,7 +42,11 @@ func noVmNamed(arg1 string) error {
 }
 
 func thereIsAVmNamed(arg1 string) error {
-	return godog.ErrPending
+	if _, err := os.Stat("./test/virtualMachines/" + arg1 + ".img"); os.IsNotExist(err) {
+		return err
+	}
+
+	return nil
 }
 
 func aTestConfigFile() error {
