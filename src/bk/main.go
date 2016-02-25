@@ -8,9 +8,11 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net"
 	"os"
 	"strings"
+	"time"
 )
 
 // This var block contains the command line commands and flags for BeastKeeper.
@@ -166,6 +168,40 @@ func commandConfigPrint() {
 // it's configuration.
 func commandEnforce() {
 
+	// First we need to spawn a goroutine for each instance.
+	// Those respective goroutines will be responsible for assesing state
+	// of each Instance, and performing actions to achieve the desired
+	// state.  All of these goroutines should post status messages back to
+	// this main thread which will output them to the user.  We also use
+	// these channel messages to determine state; a message of
+	// "config enforced" indicates that the goroutine is finished and will
+	// exit.  Once all goroutines have exited this function will return.
+
+	var instanceChannels = []chan string{}
+
+	for _, instance := range beastKeeperMasterConfiguration.Instances {
+		instanceChannel := make(chan string)
+		instanceChannels = append(instanceChannels, instanceChannel)
+		go enforceInstanceConfig(instance, instanceChannel)
+	}
+
+	completedRoutines := 0
+
+	for completedRoutines < len(instanceChannels) {
+		for _, channel := range instanceChannels {
+			message := <-channel
+			if message == "config enforced" {
+				completedRoutines++
+				fmt.Printf("%v completedRoutines\n", completedRoutines)
+			}
+		}
+	}
+
+}
+
+func enforceInstanceConfig(instance Instance, channel chan string) {
+	time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
+	channel <- "config enforced"
 }
 
 // General order of operations here is:
