@@ -47,7 +47,6 @@ func (self InstanceType) MarshalJSON() ([]byte, error) {
 	default:
 		return nil, errors.New("Un-Recognized InstanceType")
 	}
-
 }
 
 // Overriding the UnmarshalJSON method of our InstaceType so we can use our enum
@@ -100,6 +99,51 @@ type Instance struct {
 	Address    net.IP
 	AdminLogin string
 	Containers []ApplicationContainerInstance
+}
+
+// InstanceStateMachine has an "enforce" function that iterates over an Instance
+// struct and execute local or remote (SSH) commands that should move the state
+// machine closer to the desired state. The state machine is defined as
+// collection of State structs, containing two functions; one to test the state
+// and a matching function that should cause the state to be true after it's
+// successful execution.
+type InstanceStateMachine struct {
+	states []State
+}
+
+type State struct {
+	attempts, maxAttempts int
+}
+
+func (s State) Assess() bool {
+
+	return false
+
+}
+
+func (s State) Advance() bool {
+
+	return false
+
+}
+
+func (i InstanceStateMachine) Enforce() bool {
+
+	attempt := 0
+	for _, state := range i.states {
+		if !state.Assess() {
+			for attempt < state.maxAttempts {
+				attempt++
+				state.Advance()
+			}
+			if !state.Assess() {
+
+				return false
+
+			}
+		}
+	}
+	return true
 }
 
 //Type and Enum construct for describing ApplicationContainer types
@@ -201,6 +245,9 @@ func commandEnforce() {
 
 func enforceInstanceConfig(instance Instance, channel chan string) {
 	time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
+
+	// For this Instance we need to determine it's state.
+
 	channel <- "config enforced"
 }
 
