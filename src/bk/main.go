@@ -108,35 +108,35 @@ type Instance struct {
 // and a matching function that should cause the state to be true after it's
 // successful execution.
 type InstanceStateMachine struct {
-	states []State
+	states   []State
+	instance Instance
+}
+
+func (ism InstanceStateMachine) GenerateStates() {
+
+	if ism.instance.Type == VM {
+		var diskImageExists State
+		_ = diskImageExists
+	}
+
 }
 
 type State struct {
 	attempts, maxAttempts int
-}
-
-func (s State) Assess() bool {
-
-	return false
-
-}
-
-func (s State) Advance() bool {
-
-	return false
-
+	assess                func() bool
+	advance               func() bool
 }
 
 func (i InstanceStateMachine) Enforce() bool {
 
 	attempt := 0
 	for _, state := range i.states {
-		if !state.Assess() {
+		if !state.assess() {
 			for attempt < state.maxAttempts {
 				attempt++
-				state.Advance()
+				state.advance()
 			}
-			if !state.Assess() {
+			if !state.assess() {
 
 				return false
 
