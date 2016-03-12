@@ -95,3 +95,15 @@ func TestCommandConfigPrint(t *testing.T) {
 		t.Fatalf("Config file not printed correctly")
 	}
 }
+
+func TestGenerateStates(t *testing.T) {
+
+	var ism InstanceStateMachine
+	ism.instance.Type = VM
+
+	ism.GenerateStates()
+
+	if len(ism.states) < 1 {
+		t.Fatalf("No states were generated")
+	}
+}

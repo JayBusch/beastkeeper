@@ -8,11 +8,11 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 	"io/ioutil"
 	"log"
-	"math/rand"
+	//"math/rand"
 	"net"
 	"os"
 	"strings"
-	"time"
+	//"time"
 )
 
 // This var block contains the command line commands and flags for BeastKeeper.
@@ -112,27 +112,73 @@ type InstanceStateMachine struct {
 	instance Instance
 }
 
-func (ism InstanceStateMachine) GenerateStates() {
+func (self *InstanceStateMachine) GenerateStates() {
 
-	if ism.instance.Type == VM {
-		var diskImageExists State
-		_ = diskImageExists
+	//self.states := []interface{}
+
+	if self.instance.Type == VM {
+		fmt.Println("len(self.states): ", len(self.states))
+		diskImageExists := DiskImageExistsState{maxAttempts: 5}
+		self.states = append(self.states, diskImageExists)
+		fmt.Println("len(self.states): ", len(self.states))
 	}
 
 }
 
-type State struct {
-	attempts, maxAttempts int
-	assess                func() bool
-	advance               func() bool
+type State interface {
+	getAttempts() int
+	setAttempts(int)
+	getMaxAttempts() int
+	setMaxAttempts(int)
+	assess() bool
+	advance() bool
 }
 
-func (i InstanceStateMachine) Enforce() bool {
+type DiskImageExistsState struct {
+	State
+	attempts, maxAttempts int
+}
+
+func (self DiskImageExistsState) getAttempts() int {
+	return self.attempts
+}
+
+func (self DiskImageExistsState) setAttempts(attempts int) {
+	self.attempts = attempts
+}
+
+func (self DiskImageExistsState) getMaxAttempts() int {
+	return self.maxAttempts
+}
+
+func (self DiskImageExistsState) setMaxAttempts(maxAttempts int) {
+	self.maxAttempts = maxAttempts
+}
+
+func (self DiskImageExistsState) assess() bool {
+	return false
+}
+
+func (self DiskImageExistsState) advance() bool {
+	return false
+}
+
+//func (self DiskImageExistsState) assess() bool {
+//	return false
+//}
+
+func (self *InstanceStateMachine) Enforce() bool {
+
+	self.GenerateStates()
+
+	fmt.Println("states generated", len(self.states))
 
 	attempt := 0
-	for _, state := range i.states {
+	for _, state := range self.states {
+		fmt.Println("assesing")
 		if !state.assess() {
-			for attempt < state.maxAttempts {
+			for attempt < state.getMaxAttempts() {
+				fmt.Println("Attempting")
 				attempt++
 				state.advance()
 			}
@@ -244,9 +290,13 @@ func commandEnforce() {
 }
 
 func enforceInstanceConfig(instance Instance, channel chan string) {
-	time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
+	//time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
 
 	// For this Instance we need to determine it's state.
+
+	ism := InstanceStateMachine{instance: instance}
+
+	ism.Enforce()
 
 	channel <- "config enforced"
 }
