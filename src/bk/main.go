@@ -101,7 +101,7 @@ type Instance struct {
 	Containers []ApplicationContainerInstance
 }
 
-// InstanceStateMachine has an "enforce" function that iterates over an Instance
+// InstanceStateMachine has an "Enforce" function that iterates over an Instance
 // struct and execute local or remote (SSH) commands that should move the state
 // machine closer to the desired state. The state machine is defined as
 // collection of State structs, containing two functions; one to test the state
