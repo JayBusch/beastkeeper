@@ -108,7 +108,7 @@ type Instance struct {
 // and a matching function that should cause the state to be true after it's
 // successful execution.
 type InstanceStateMachine struct {
-	states   []State
+	states   []t_State
 	instance Instance
 }
 
@@ -118,54 +118,61 @@ func (self *InstanceStateMachine) GenerateStates() {
 
 	if self.instance.Type == VM {
 		fmt.Println("len(self.states): ", len(self.states))
-		diskImageExists := DiskImageExistsState{maxAttempts: 5}
+		diskImageExists := &DiskImageExistsState{State: State{maxAttempts: 5}}
 		self.states = append(self.states, diskImageExists)
 		fmt.Println("len(self.states): ", len(self.states))
 	}
 
 }
 
-type State interface {
+type t_State interface {
+	assess() bool
+	advance()
 	getAttempts() int
 	setAttempts(int)
 	getMaxAttempts() int
 	setMaxAttempts(int)
-	assess() bool
-	advance() bool
+}
+
+type State struct {
+	attempts    int
+	maxAttempts int
+}
+
+func (self *State) advance() {
+	self.attempts = self.attempts + 1
+}
+func (self State) assess() bool {
+	return true
+}
+
+func (self State) getAttempts() int {
+	return self.attempts
+}
+
+func (self *State) setAttempts(attempts int) {
+	self.attempts = attempts
+}
+
+func (self State) getMaxAttempts() int {
+	return self.maxAttempts
+}
+
+func (self *State) setMaxAttempts(maxAttempts int) {
+	self.maxAttempts = maxAttempts
 }
 
 type DiskImageExistsState struct {
 	State
-	attempts, maxAttempts int
 }
 
-func (self DiskImageExistsState) getAttempts() int {
-	return self.attempts
-}
-
-func (self DiskImageExistsState) setAttempts(attempts int) {
-	self.attempts = attempts
-}
-
-func (self DiskImageExistsState) getMaxAttempts() int {
-	return self.maxAttempts
-}
-
-func (self DiskImageExistsState) setMaxAttempts(maxAttempts int) {
-	self.maxAttempts = maxAttempts
-}
+//func (self DiskImageExistsState) attempts() int {
+//	return 0
+//}
 
 func (self DiskImageExistsState) assess() bool {
 	return false
 }
-
-func (self DiskImageExistsState) advance() bool {
-	return false
-}
-
-//func (self DiskImageExistsState) assess() bool {
-//	return false
-//}
 
 func (self *InstanceStateMachine) Enforce() bool {
 
@@ -173,20 +180,12 @@ func (self *InstanceStateMachine) Enforce() bool {
 
 	fmt.Println("states generated", len(self.states))
 
-	attempt := 0
 	for _, state := range self.states {
 		fmt.Println("assesing")
-		if !state.assess() {
-			for attempt < state.getMaxAttempts() {
-				fmt.Println("Attempting")
-				attempt++
-				state.advance()
-			}
-			if !state.assess() {
-
-				return false
-
-			}
+		state.setAttempts(0)
+		for !state.assess() && (state.getAttempts() < state.getMaxAttempts()) {
+			fmt.Printf("attempt:%d of %d\n", state.getAttempts(), state.getMaxAttempts())
+			state.advance()
 		}
 	}
 	return true
