@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bk/states"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -8,11 +9,9 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 	"io/ioutil"
 	"log"
-	//"math/rand"
 	"net"
 	"os"
 	"strings"
-	//"time"
 )
 
 // This var block contains the command line commands and flags for BeastKeeper.
@@ -108,70 +107,16 @@ type Instance struct {
 // and a matching function that should cause the state to be true after it's
 // successful execution.
 type InstanceStateMachine struct {
-	states   []t_State
+	states   []states.T_State
 	instance Instance
 }
 
 func (self *InstanceStateMachine) GenerateStates() {
-
-	//self.states := []interface{}
-
 	if self.instance.Type == VM {
-		fmt.Println("len(self.states): ", len(self.states))
-		diskImageExists := &DiskImageExistsState{State: State{maxAttempts: 5}}
+		diskImageExists := &states.DiskImageExistsState{BaseState: states.BaseState{}}
+		diskImageExists.SetMaxAttempts(5)
 		self.states = append(self.states, diskImageExists)
-		fmt.Println("len(self.states): ", len(self.states))
 	}
-
-}
-
-type t_State interface {
-	assess() bool
-	advance()
-	getAttempts() int
-	setAttempts(int)
-	getMaxAttempts() int
-	setMaxAttempts(int)
-}
-
-type State struct {
-	attempts    int
-	maxAttempts int
-}
-
-func (self *State) advance() {
-	self.attempts = self.attempts + 1
-}
-func (self State) assess() bool {
-	return true
-}
-
-func (self State) getAttempts() int {
-	return self.attempts
-}
-
-func (self *State) setAttempts(attempts int) {
-	self.attempts = attempts
-}
-
-func (self State) getMaxAttempts() int {
-	return self.maxAttempts
-}
-
-func (self *State) setMaxAttempts(maxAttempts int) {
-	self.maxAttempts = maxAttempts
-}
-
-type DiskImageExistsState struct {
-	State
-}
-
-//func (self DiskImageExistsState) attempts() int {
-//	return 0
-//}
-
-func (self DiskImageExistsState) assess() bool {
-	return false
 }
 
 func (self *InstanceStateMachine) Enforce() bool {
@@ -182,10 +127,10 @@ func (self *InstanceStateMachine) Enforce() bool {
 
 	for _, state := range self.states {
 		fmt.Println("assesing")
-		state.setAttempts(0)
-		for !state.assess() && (state.getAttempts() < state.getMaxAttempts()) {
-			fmt.Printf("attempt:%d of %d\n", state.getAttempts(), state.getMaxAttempts())
-			state.advance()
+		state.SetAttempts(0)
+		for !state.Assess() && (state.GetAttempts() < state.GetMaxAttempts()) {
+			fmt.Printf("attempt:%d of %d\n", state.GetAttempts(), state.GetMaxAttempts())
+			state.Advance()
 		}
 	}
 	return true
