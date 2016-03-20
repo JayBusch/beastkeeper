@@ -1,0 +1,8 @@
+mode: set
+beastkeeper/src/bk/states/BaseState.go:17.34,19.2 1 1
+beastkeeper/src/bk/states/BaseState.go:20.37,22.2 1 0
+beastkeeper/src/bk/states/BaseState.go:24.41,26.2 1 1
+beastkeeper/src/bk/states/BaseState.go:28.50,30.2 1 1
+beastkeeper/src/bk/states/BaseState.go:32.44,34.2 1 0
+beastkeeper/src/bk/states/BaseState.go:36.56,38.2 1 1
+beastkeeper/src/bk/states/DiskImageExistsState.go:7.48,9.2 1 0

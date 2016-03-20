@@ -107,3 +107,35 @@ func TestGenerateStates(t *testing.T) {
 		t.Fatalf("No states were generated")
 	}
 }
+
+func TestCommandEnforce(t *testing.T) {
+
+	writeTestConfigToFile()
+	parseConfigFile(testConfigFileName)
+
+	old_stdout := os.Stdout
+	r, w, err := os.Pipe()
+	os.Stdout = w
+
+	if err != nil {
+		t.Fatalf("Could not open Pipe to STDOUT")
+	}
+
+	commandEnforce()
+
+	outC := make(chan []byte)
+
+	go func() {
+		var buf bytes.Buffer
+		io.Copy(&buf, r)
+		outC <- buf.Bytes()
+	}()
+
+	w.Close()
+	os.Stdout = old_stdout
+	out := <-outC
+
+	if string(out)[0:18] != "states generated 1" {
+		t.Fatalf("States Not Generated Properly")
+	}
+}

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bk/states"
+	"beastkeeper/src/bk/states"
 	"encoding/json"
 	"errors"
 	"fmt"
