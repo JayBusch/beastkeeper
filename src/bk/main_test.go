@@ -1,6 +1,7 @@
 package main
 
 import (
+	"beastkeeper/src/bk/instanceTypes"
 	"bytes"
 	"encoding/json"
 	"io"
@@ -47,7 +48,7 @@ func TestParseConfigFile(t *testing.T) {
 
 	} else if testConfig.Instances[0].Label != "test_instance_1" {
 		t.Fatalf("Label does not match")
-	} else if testConfig.Instances[0].Type != VM {
+	} else if testConfig.Instances[0].Type != instanceTypes.VM {
 		t.Fatalf("Type does not match")
 	} else if testConfig.Instances[0].Address.String() != "192.242.2.200" {
 		t.Fatalf("Address does not match")
@@ -99,7 +100,7 @@ func TestCommandConfigPrint(t *testing.T) {
 func TestGenerateStates(t *testing.T) {
 
 	var ism InstanceStateMachine
-	ism.instance.Type = VM
+	ism.instance.Type = instanceTypes.VM
 
 	ism.GenerateStates()
 

@@ -1,7 +1,10 @@
 package states
 
+import "beastkeeper/src/bk/instanceTypes"
+
 type T_State interface {
-	Assess() bool
+	Assess(instanceTypes.BaseInstance) bool
+	Enforce(instanceTypes.BaseInstance)
 	Advance()
 	GetAttempts() int
 	SetAttempts(int)
@@ -17,8 +20,13 @@ type BaseState struct {
 func (self *BaseState) Advance() {
 	self.attempts = self.attempts + 1
 }
-func (self BaseState) Assess() bool {
-	return true
+
+func (self BaseState) Assess(instance instanceTypes.BaseInstance) bool {
+	return false
+}
+
+func (self BaseState) Enforce(instance instanceTypes.BaseInstance) {
+
 }
 
 func (self BaseState) GetAttempts() int {

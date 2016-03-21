@@ -1,8 +1,14 @@
 mode: set
-beastkeeper/src/bk/states/BaseState.go:17.34,19.2 1 1
-beastkeeper/src/bk/states/BaseState.go:20.37,22.2 1 0
-beastkeeper/src/bk/states/BaseState.go:24.41,26.2 1 1
-beastkeeper/src/bk/states/BaseState.go:28.50,30.2 1 1
-beastkeeper/src/bk/states/BaseState.go:32.44,34.2 1 0
-beastkeeper/src/bk/states/BaseState.go:36.56,38.2 1 1
-beastkeeper/src/bk/states/DiskImageExistsState.go:7.48,9.2 1 0
+beastkeeper/src/bk/states/DiskImageExistsState.go:14.83,15.39 1 0
+beastkeeper/src/bk/states/DiskImageExistsState.go:20.2,20.14 1 0
+beastkeeper/src/bk/states/DiskImageExistsState.go:15.39,16.51 1 0
+beastkeeper/src/bk/states/DiskImageExistsState.go:16.51,18.4 1 0
+beastkeeper/src/bk/states/DiskImageExistsState.go:23.79,24.66 1 0
+beastkeeper/src/bk/states/DiskImageExistsState.go:24.66,29.3 4 0
+beastkeeper/src/bk/states/BaseState.go:20.34,22.2 1 1
+beastkeeper/src/bk/states/BaseState.go:24.72,26.2 1 0
+beastkeeper/src/bk/states/BaseState.go:28.68,30.2 0 0
+beastkeeper/src/bk/states/BaseState.go:32.41,34.2 1 1
+beastkeeper/src/bk/states/BaseState.go:36.50,38.2 1 1
+beastkeeper/src/bk/states/BaseState.go:40.44,42.2 1 0
+beastkeeper/src/bk/states/BaseState.go:44.56,46.2 1 1
