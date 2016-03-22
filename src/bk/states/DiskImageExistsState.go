@@ -23,7 +23,14 @@ func (self DiskImageExistsState) Assess(instance instanceTypes.BaseInstance) boo
 func (self DiskImageExistsState) Enforce(instance instanceTypes.BaseInstance) {
 	if _, fileErr := os.Stat(instance.GetDiskImageFileName()); os.IsNotExist(fileErr) {
 
-		cmd := exec.Command("truncate", "-s", "1GB", instance.GetDiskImageFileName())
+		imageSizeString := string(instance.RootDiskImageSize) + "GB"
+
+		imageFileName := instance.GetDiskImageFileName()
+
+		fmt.Printf("imageSizeString: %s\n", imageSizeString)
+		fmt.Printf("imageFileName: %s\n", imageFileName)
+
+		cmd := exec.Command("truncate", "-s", imageSizeString, instance.GetDiskImageFileName())
 
 		cmdErr := cmd.Run()
 
