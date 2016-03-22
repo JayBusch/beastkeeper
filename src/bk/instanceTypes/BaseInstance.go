@@ -78,7 +78,7 @@ type BaseInstance struct {
 	RootDiskImageSize string
 	Address           net.IP
 	AdminLogin        string
-	Containers        []ApplicationContainerInstance
+	Containers        []BaseApplicationContainerInstance
 }
 
 func (self *BaseInstance) GetDiskImageFileName() string {

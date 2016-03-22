@@ -5,11 +5,9 @@ import (
 	"beastkeeper/src/bk/states"
 	"encoding/json"
 	"fmt"
-	"github.com/twinj/uuid"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"io/ioutil"
 	"log"
-	"net"
 	"os"
 )
 
@@ -65,7 +63,7 @@ func (self *InstanceStateMachine) Enforce() bool {
 }
 
 //Type and Enum construct for describing ApplicationContainer types
-type ApplicationContainerType int
+/*type ApplicationContainerType int
 
 const (
 	JetPack ApplicationContainerType = iota
@@ -80,7 +78,7 @@ type ApplicationContainerInstance struct {
 	Type    ApplicationContainerType
 	Address net.IP
 }
-
+*/
 // BeastKeeperConfiguration structs describe a single full configuration of the
 // BeastKeeper application. There will initially only be one instance of this
 // type held in a global variable; but others may be introduced later if we add

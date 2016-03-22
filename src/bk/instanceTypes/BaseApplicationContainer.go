@@ -6,18 +6,18 @@ import (
 )
 
 //Type and Enum construct for describing ApplicationContainer types
-type ApplicationContainerType int
+type BaseApplicationContainerType int
 
 const (
-	JetPack ApplicationContainerType = iota
-	Docker  ApplicationContainerType = iota
+	JetPack BaseApplicationContainerType = iota
+	Docker  BaseApplicationContainerType = iota
 )
 
 // ApplicationContainer structs contain the data requied to describe isntances
 // of OS level virtualized application containers such as jetpack pods.
-type ApplicationContainerInstance struct {
+type BaseApplicationContainerInstance struct {
 	ID      uuid.UUID
 	Label   string
-	Type    ApplicationContainerType
+	Type    BaseApplicationContainerType
 	Address net.IP
 }
