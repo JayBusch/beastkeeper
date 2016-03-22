@@ -62,23 +62,6 @@ func (self *InstanceStateMachine) Enforce() bool {
 	return true
 }
 
-//Type and Enum construct for describing ApplicationContainer types
-/*type ApplicationContainerType int
-
-const (
-	JetPack ApplicationContainerType = iota
-	Docker  ApplicationContainerType = iota
-)
-
-// ApplicationContainer structs contain the data requied to describe isntances
-// of OS level virtualized application containers such as jetpack pods.
-type ApplicationContainerInstance struct {
-	ID      uuid.UUID
-	Label   string
-	Type    ApplicationContainerType
-	Address net.IP
-}
-*/
 // BeastKeeperConfiguration structs describe a single full configuration of the
 // BeastKeeper application. There will initially only be one instance of this
 // type held in a global variable; but others may be introduced later if we add

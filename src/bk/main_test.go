@@ -22,7 +22,8 @@ var testConfigAsBytes = []byte(`
 			"ID" : "2237b51a-39aa-4720-b68a-d1ee214e9272",
 			"Label" : "test_instance_1",
 			"Type" : "VM",
-			"Path" : "test/virtualMachines/",
+			"Path" : "virtualMachines/",
+			"RootDiskImageSize" : "1", 
 			"Address" : "192.242.2.200",
 			"AdminLogin" : "root",
 			"Containers" : []

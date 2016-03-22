@@ -34,7 +34,7 @@ func iCdTo(arg1 string) error {
 
 func noVmNamed(arg1 string) error {
 
-	if _, err := os.Stat("./test/virtualMachines/" + arg1 + ".img"); os.IsNotExist(err) {
+	if _, err := os.Stat("virtualMachines/" + arg1 + ".img"); os.IsNotExist(err) {
 		return nil
 	}
 
@@ -42,7 +42,7 @@ func noVmNamed(arg1 string) error {
 }
 
 func thereIsAVmNamed(arg1 string) error {
-	if _, err := os.Stat("./test/virtualMachines/" + arg1 + ".img"); os.IsNotExist(err) {
+	if _, err := os.Stat("virtualMachines/" + arg1 + ".img"); os.IsNotExist(err) {
 		return err
 	}
 
