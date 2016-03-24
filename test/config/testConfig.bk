@@ -7,7 +7,9 @@
 			"Path" : "virtualMachines/",
 			"RootDiskImageSize" : "1", 
 			"Address" : "192.242.2.200",
-			"AdminLogin" : "root",
+			"AdminLogin" : "bk",
+			"SSHPort" : 10001,
+			"SSHKeyPassphraseEnabled" : false,
 			"Containers" : []
 			}]	
 	}

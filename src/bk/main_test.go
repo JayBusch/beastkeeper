@@ -25,7 +25,9 @@ var testConfigAsBytes = []byte(`
 			"Path" : "virtualMachines/",
 			"RootDiskImageSize" : "1", 
 			"Address" : "192.242.2.200",
-			"AdminLogin" : "root",
+			"AdminLogin" : "bk",
+			"SSHPort" : 10001,
+			"SSHKeyPassphraseEnabled" : false,
 			"Containers" : []
 			}]	
 	}
@@ -46,14 +48,13 @@ func TestParseConfigFile(t *testing.T) {
 		t.Fatalf("No data was unmarshalled")
 	} else if testConfig.Instances[0].ID.UUID.String() != "2237b51a-39aa-4720-b68a-d1ee214e9272" {
 		t.Fatalf("ID does not match")
-
 	} else if testConfig.Instances[0].Label != "test_instance_1" {
 		t.Fatalf("Label does not match")
 	} else if testConfig.Instances[0].Type != instanceTypes.VM {
 		t.Fatalf("Type does not match")
 	} else if testConfig.Instances[0].Address.String() != "192.242.2.200" {
 		t.Fatalf("Address does not match")
-	} else if testConfig.Instances[0].AdminLogin != "root" {
+	} else if testConfig.Instances[0].AdminLogin != "bk" {
 		t.Fatalf("AdminLogin does not match")
 	}
 }

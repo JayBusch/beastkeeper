@@ -6,4 +6,5 @@ Feature: Enforce Test Configuration
 	  When I cd to: "test"
 	  And I run: "../bin/bk -c ./config/testConfig.bk enforce"
 	  Then there is a vm named: "test_instance_1"
+	  And running uname over SSH on the instance yields "FreeBSD"
 	  

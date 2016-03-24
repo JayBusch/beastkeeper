@@ -71,14 +71,16 @@ func (self InstanceType) UnmarshalJSON(b []byte) error {
 // local or at a provider.  Application containers such as jetpack pods are not
 // included in this, and have their own data structure
 type BaseInstance struct {
-	ID                *UUID `json:",UUID"`
-	Label             string
-	Type              InstanceType
-	Path              string
-	RootDiskImageSize string
-	Address           net.IP
-	AdminLogin        string
-	Containers        []BaseApplicationContainerInstance
+	ID                      *UUID `json:",UUID"`
+	Label                   string
+	Type                    InstanceType
+	Path                    string
+	RootDiskImageSize       string
+	Address                 net.IP
+	AdminLogin              string
+	SSHPort                 int
+	SSHKeyPassphraseEnabled bool
+	Containers              []BaseApplicationContainerInstance
 }
 
 func (self *BaseInstance) GetDiskImageFileName() string {

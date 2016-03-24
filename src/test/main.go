@@ -5,7 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/DATA-DOG/godog"
+	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/agent"
 	"io/ioutil"
+	"net"
 	"os"
 	"os/exec"
 )
@@ -56,21 +59,11 @@ func thereIsAVmNamed(arg1 string) error {
 
 func aTestConfigFile() error {
 
-	//var workingDir, _ = os.Getwd()
-
-	//return fmt.Errorf("%v", workingDir)
-
 	_, fileErr := os.Stat("test/config/testConfig.bk")
 
 	if os.IsNotExist(fileErr) {
 		return fileErr
 	}
-
-	/*configFile, err := os.Open("testConfig.bk")
-	_ = configFile
-	if os.IsNotExist(err) {
-		return fmt.Errorf("testConfig.bk does not exist")
-	}*/
 
 	return nil
 }
@@ -112,8 +105,53 @@ func bkOutputShouldMatchTestConfig() error {
 	return nil
 }
 
-func main() {
+func SSHAgent() ssh.AuthMethod {
+	if sshAgent, err := net.Dial("unix", os.Getenv("SSH_AUTH_SOCK")); err == nil {
+		return ssh.PublicKeysCallback(agent.NewClient(sshAgent).Signers)
+	}
+	return nil
+}
 
+func PublicKeyFile(file string) ssh.AuthMethod {
+	buffer, err := ioutil.ReadFile(file)
+	if err != nil {
+		return nil
+	}
+
+	key, err := ssh.ParsePrivateKey(buffer)
+	if err != nil {
+		return nil
+	}
+	return ssh.PublicKeys(key)
+}
+
+func runningUnameOverSSHOnTheInstanceYields(arg1 string) error {
+
+	sshConfig := &ssh.ClientConfig{
+		User: "bk",
+		Auth: []ssh.AuthMethod{
+			SSHAgent(),
+		},
+	}
+
+	connection, err := ssh.Dial("tcp", "127.0.0.1:10001", sshConfig)
+	if err != nil {
+		fmt.Errorf("Failed to dial: %s", err)
+	}
+
+	session, sessErr := connection.NewSession()
+
+	if err != nil {
+		fmt.Errorf("Failed to create session: %s", err)
+	}
+
+	_ = session
+	_ = sessErr
+
+	return godog.ErrPending
+}
+
+func main() {
 	godog.Run(func(s *godog.Suite) {
 		origWd, err := os.Getwd()
 		if err != nil {
@@ -139,6 +177,7 @@ func main() {
 		s.Step(`^there is a vm named: "([^"]*)"$`, thereIsAVmNamed)
 		s.Step(`^a test config file$`, aTestConfigFile)
 		s.Step(`^bk output should match testConfig$`, bkOutputShouldMatchTestConfig)
+		s.Step(`^running uname over SSH on the instance yields "([^"]*)"$`,
+			runningUnameOverSSHOnTheInstanceYields)
 	})
-
 }
