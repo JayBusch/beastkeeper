@@ -139,7 +139,6 @@ func commandEnforce() {
 			}
 		}
 	}
-
 }
 
 func enforceInstanceConfig(instance instanceTypes.BaseInstance, channel chan string) {
