@@ -19,9 +19,9 @@ beastkeeper/src/bk/main.go:125.68,129.3 3 1
 beastkeeper/src/bk/main.go:133.48,134.44 1 1
 beastkeeper/src/bk/main.go:134.44,136.36 2 1
 beastkeeper/src/bk/main.go:136.36,139.5 2 1
-beastkeeper/src/bk/main.go:144.86,154.2 3 1
-beastkeeper/src/bk/main.go:164.13,169.33 4 0
-beastkeeper/src/bk/main.go:173.2,175.32 2 0
-beastkeeper/src/bk/main.go:169.33,171.3 1 0
-beastkeeper/src/bk/main.go:177.2,178.23 1 0
-beastkeeper/src/bk/main.go:179.2,180.19 1 0
+beastkeeper/src/bk/main.go:144.86,151.2 3 1
+beastkeeper/src/bk/main.go:161.13,166.33 4 0
+beastkeeper/src/bk/main.go:170.2,172.32 2 0
+beastkeeper/src/bk/main.go:166.33,168.3 1 0
+beastkeeper/src/bk/main.go:174.2,175.23 1 0
+beastkeeper/src/bk/main.go:176.2,177.19 1 0

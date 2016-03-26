@@ -23,6 +23,7 @@ var (
 // This var block contains globally declared variables for BeastKeeper.
 var (
 	beastKeeperMasterConfiguration BeastKeeperConfiguration
+	installImageManager            InstallImageManager
 )
 
 // InstanceStateMachine has an "Enforce" function that iterates over an Instance
@@ -93,6 +94,30 @@ func parseConfigFile(configFileName string) BeastKeeperConfiguration {
 	return *config
 }
 
+type InstallImage struct {
+	version      FloatType
+	architecture int
+}
+
+type InstallImageManager struct {
+	InstallImagePath   string
+	ImageDownloadQueue []InstallImage
+}
+
+func (self *InstallImageManager) ImageExists() bool {
+	return false
+}
+
+func (self *InstallImageManager) ImageHasCorrectCheckSum() bool {
+	return false
+}
+
+func (self *InstallImageManager) RegisterImageForDownload() {
+}
+
+func (self *InstallImageManager) ProcessImageDownloadQueue() {
+}
+
 // commandConfigPrint allows the user to print the currently configured config
 // file to stdout.  The format is a valid JSON config file in and of itself.
 // This can be used along with other command line flags to construct a permanent
@@ -142,9 +167,6 @@ func commandEnforce() {
 }
 
 func enforceInstanceConfig(instance instanceTypes.BaseInstance, channel chan string) {
-	//time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
-
-	// For this Instance we need to determine it's state.
 
 	ism := InstanceStateMachine{instance: instance}
 
@@ -179,5 +201,4 @@ func main() {
 	case "enforce":
 		commandEnforce()
 	}
-
 }

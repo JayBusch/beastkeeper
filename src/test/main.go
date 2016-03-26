@@ -37,12 +37,7 @@ func iCdTo(arg1 string) error {
 
 func noVmNamed(arg1 string) error {
 
-	//wd, _ := os.Getwd()
-
-	//fmt.Printf("noVmNamed Running in: %v\n", wd)
-
 	if _, err := os.Stat("test/virtualMachines/" + arg1 + ".img"); os.IsNotExist(err) {
-		//fmt.Printf("Disk Image Not Found\n")
 		return nil
 	}
 
