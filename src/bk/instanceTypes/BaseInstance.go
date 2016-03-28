@@ -74,7 +74,7 @@ type BaseInstance struct {
 	ID                      *UUID `json:",UUID"`
 	Label                   string
 	Type                    InstanceType
-	OSVersion               FloatType
+	OSVersion               float32
 	Path                    string
 	RootDiskImageSize       string
 	Address                 net.IP

@@ -2,9 +2,9 @@ package states
 
 import (
 	"beastkeeper/src/bk/instanceTypes"
-	"fmt"
-	"os"
-	"os/exec"
+	//"fmt"
+	//"os"
+	//"os/exec"
 )
 
 type InstallImageExistsState struct {

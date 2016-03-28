@@ -13,3 +13,5 @@ beastkeeper/src/bk/states/DiskImageExistsState.go:16.69,18.4 1 0
 beastkeeper/src/bk/states/DiskImageExistsState.go:23.79,24.84 1 0
 beastkeeper/src/bk/states/DiskImageExistsState.go:24.84,37.20 7 0
 beastkeeper/src/bk/states/DiskImageExistsState.go:37.20,39.4 1 0
+beastkeeper/src/bk/states/InstallImageExistsState.go:14.86,16.2 1 0
+beastkeeper/src/bk/states/InstallImageExistsState.go:18.82,19.2 0 0

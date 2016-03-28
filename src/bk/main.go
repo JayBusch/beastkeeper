@@ -95,7 +95,7 @@ func parseConfigFile(configFileName string) BeastKeeperConfiguration {
 }
 
 type InstallImage struct {
-	version      FloatType
+	version      float32
 	architecture int
 }
 
