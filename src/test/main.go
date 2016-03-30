@@ -122,6 +122,8 @@ func PublicKeyFile(file string) ssh.AuthMethod {
 
 func runningUnameOverSSHOnTheInstanceYields(arg1 string) error {
 
+	return godog.ErrPending
+
 	sshConfig := &ssh.ClientConfig{
 		User: "bk",
 		Auth: []ssh.AuthMethod{
