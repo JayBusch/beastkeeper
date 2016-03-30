@@ -1,3 +1,3 @@
 # beastkeeper
 
-![Build Animation](https://raw.github.com/JayBusch/beastkeeper/img/animatedBuild.gif)
+![Build Animation](https://raw.github.com/JayBusch/beastkeeper/master/img/animatedBuild.gif)
