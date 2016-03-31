@@ -10,7 +10,7 @@ func TestAdvance(t *testing.T) {
 	testBaseState.SetAttempts(0)
 
 	if testBaseState.GetAttempts() != 0 {
-		t.Fatalf("attempt not initialized")
+		t.Fatalf("attempts not initialized")
 	}
 
 	testBaseState.Advance()
@@ -18,5 +18,4 @@ func TestAdvance(t *testing.T) {
 	if testBaseState.GetAttempts() != 1 {
 		t.Fatalf("Advance not incrementing attempt count")
 	}
-
 }

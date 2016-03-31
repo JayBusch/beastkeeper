@@ -18,6 +18,9 @@ var testConfigFileName = "../../test/config/testConfig.bk"
 
 var testConfigAsBytes = []byte(`
 	{
+
+		"LocalHostConfiguration": {"InstallImagePath":"installImages/"},
+
 		"Instances": [{
 			"ID" : "2237b51a-39aa-4720-b68a-d1ee214e9272",
 			"Label" : "test_instance_1",

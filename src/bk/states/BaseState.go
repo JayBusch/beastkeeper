@@ -17,14 +17,22 @@ type BaseState struct {
 	maxAttempts int
 }
 
+// Simple function for tracking each attempt.
 func (self *BaseState) Advance() {
 	self.attempts = self.attempts + 1
 }
 
+// Available here only to provide interface compatability; derived types
+// should use this function to return a boolean representing whether or
+// not the state is currently enforced.
 func (self BaseState) Assess(instance instanceTypes.BaseInstance) bool {
 	return false
 }
 
+// Available here only to provide interface compatability; derived types
+// should use this function to enforce the state; and expect that it is
+// called by the state machine serially for each target system but
+// concurrently across target systems.
 func (self BaseState) Enforce(instance instanceTypes.BaseInstance) {
 
 }

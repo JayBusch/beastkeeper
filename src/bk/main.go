@@ -63,12 +63,17 @@ func (self *InstanceStateMachine) Enforce() bool {
 	return true
 }
 
+type T_LocalHostConfiguration struct {
+	InstallImagePath string
+}
+
 // BeastKeeperConfiguration structs describe a single full configuration of the
 // BeastKeeper application. There will initially only be one instance of this
 // type held in a global variable; but others may be introduced later if we add
 // features to manage multiple configurations
 type BeastKeeperConfiguration struct {
-	Instances []instanceTypes.BaseInstance
+	LocalHostConfiguration T_LocalHostConfiguration
+	Instances              []instanceTypes.BaseInstance
 }
 
 // parseConfigFile reads a config file and marshalls the JSON data to a GO
