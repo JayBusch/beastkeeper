@@ -26,6 +26,7 @@ var testConfigAsBytes = []byte(`
 			"Label" : "test_instance_1",
 			"Type" : "VM",
 			"OSVersion" : 10.2,
+			"IsRunning" : true,
 			"Path" : "virtualMachines/",
 			"RootDiskImageSize" : "1", 
 			"Address" : "192.242.2.200",
@@ -142,7 +143,7 @@ func TestCommandEnforce(t *testing.T) {
 	os.Stdout = old_stdout
 	out := <-outC
 
-	if string(out)[0:18] != "states generated 1" {
+	if string(out)[0:18] != "states generated 2" {
 		t.Fatalf("States Not Generated Properly")
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github.com/twinj/uuid"
 	"net"
+	"path/filepath"
 	"strings"
 )
 
@@ -75,6 +76,7 @@ type BaseInstance struct {
 	Label                   string
 	Type                    InstanceType
 	OSVersion               float32
+	IsRunning               bool
 	Path                    string
 	RootDiskImageSize       string
 	Address                 net.IP
@@ -84,6 +86,45 @@ type BaseInstance struct {
 	Containers              []BaseApplicationContainerInstance
 }
 
+// Constructor method for BaseInstance structs
+func NewBaseInstance(args ...interface{}) *BaseInstance {
+	newInstance := &BaseInstance{ID: new(UUID)}
+
+	for argNum, arg := range args {
+
+		switch argNum {
+		case 0:
+			uuid, _ := uuid.Parse(arg.(string))
+			newInstance.ID.UUID = uuid
+		case 1:
+			newInstance.Label = arg.(string)
+		case 2:
+			newInstance.Type = arg.(InstanceType)
+		case 3:
+			newInstance.OSVersion = arg.(float32)
+		case 4:
+			newInstance.IsRunning = arg.(bool)
+		case 5:
+			newInstance.Path = arg.(string)
+		case 6:
+			newInstance.RootDiskImageSize = arg.(string)
+		case 7:
+			newInstance.Address = arg.(net.IP)
+		case 8:
+			newInstance.AdminLogin = arg.(string)
+		case 9:
+			newInstance.SSHPort = arg.(int)
+		case 10:
+			newInstance.SSHKeyPassphraseEnabled = arg.(bool)
+		case 11:
+			newInstance.Containers = arg.([]BaseApplicationContainerInstance)
+		}
+	}
+
+	return newInstance
+
+}
+
 func (self *BaseInstance) GetDiskImageFileName() string {
-	return self.Path + self.Label + ".img"
+	return filepath.Join(self.Path, self.Label+".img")
 }

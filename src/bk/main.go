@@ -42,6 +42,27 @@ func (self *InstanceStateMachine) GenerateStates() {
 		diskImageExists := &states.DiskImageExistsState{BaseState: states.BaseState{}}
 		diskImageExists.SetMaxAttempts(5)
 		self.states = append(self.states, diskImageExists)
+
+		if self.instance.IsRunning {
+
+			vmExists := &states.VMExistsState{BaseState: states.BaseState{}}
+			vmExists.SetMaxAttempts(5)
+			self.states = append(self.states, vmExists)
+
+			/*			isBooted := &states.IsBootedState{BaseState: states.BaseState{}}
+						isBooted.SetMaxAttempts(5)
+						self.states = append(self.states, isBooted)
+
+						hasCorrectOS := &states.HasCorrectOSState{BaseState: states.BaseState{}}
+						hasCorrectOS.SetMaxAttempts(5)
+						self.states = append(self.states, hasCorrectOS)
+			*/
+		} else {
+			/*			isNotBooted := &states.IsNotBootedState{BaseState: states.BaseState{}}
+						isNotBooted.SetMaxAttempts(5)
+						self.states = append(self.states, isNotBooted)
+			*/
+		}
 	}
 }
 
@@ -50,6 +71,8 @@ func (self *InstanceStateMachine) Enforce() bool {
 	self.GenerateStates()
 
 	fmt.Println("states generated", len(self.states))
+
+	//stateMessageChannel := make(chan StateMessage)
 
 	for _, state := range self.states {
 		fmt.Println("assesing")
@@ -61,6 +84,11 @@ func (self *InstanceStateMachine) Enforce() bool {
 		}
 	}
 	return true
+}
+
+type StateMessage struct {
+	Type    int
+	Payload interface{}
 }
 
 type T_LocalHostConfiguration struct {
@@ -198,6 +226,10 @@ func main() {
 	}
 
 	parseConfigFile(configFileName)
+
+	installImageManager =
+		InstallImageManager{
+			InstallImagePath: beastKeeperMasterConfiguration.LocalHostConfiguration.InstallImagePath}
 
 	switch parsedFlagsAndCommands {
 
